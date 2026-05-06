@@ -52,4 +52,4 @@ To ensure Anvaya isn't killed in the background by your phone's battery manager:
 If you want to modify the code: clone this repository, open the project in Android Studio, and sync the Gradle files. You can then build a custom APK or push directly to a connected device.
 
 ## ⚠️ Current Status
-Version 1.0 focuses entirely on the background engine and loop-prevention logic. The front-end interface is currently a placeholder and is not connected to the background service. Dynamic UI configuration will be introduced in V2.0.
+Version 1.0 focuses entirely on the background engine and loop-prevention logic. The front-end interface is currently a placeholder and is not connected to the background service. Dynamic UI configuration will be introduced in V1.1.

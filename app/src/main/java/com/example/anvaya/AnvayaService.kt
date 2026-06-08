@@ -1,6 +1,7 @@
 package com.example.anvaya
 
 import android.app.PendingIntent
+import android.content.Context  // <-- Here is the magic line that fixes the error!
 import android.content.Intent
 import android.os.Bundle
 import android.service.notification.NotificationListenerService
@@ -10,7 +11,6 @@ import android.util.Log
 
 class AnvayaService : NotificationListenerService() {
 
-    // The Memory Bank
     private val recentReplies = HashMap<String, Long>()
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
@@ -21,7 +21,19 @@ class AnvayaService : NotificationListenerService() {
 
             val extras = sbn.notification?.extras ?: return
 
-            // 1. THE GROUP SHIELD
+            // --- THE MASTER SWITCH CHECK ---
+            // Read from the bridge to see if the user turned the bot off
+            val sharedPrefs = getSharedPreferences("AnvayaPrefs", Context.MODE_PRIVATE)
+            val isBotActive = sharedPrefs.getBoolean("isBotActive", true)
+
+            if (!isBotActive) {
+                Log.d("AnvayaBeta", "Master switch is OFF. Ignoring message.")
+                return // Kills the process entirely!
+            }
+
+            // Grab the user's custom text from the bridge
+            val userCustomReply = sharedPrefs.getString("customReply", "I'm currently busy!") ?: "I'm currently busy!"
+
             val isGroup = extras.getBoolean("android.isGroupConversation", false)
             val title = extras.getString("android.title") ?: ""
             val isLikelyGroup = title.contains(":") || title.contains("@")
@@ -31,7 +43,6 @@ class AnvayaService : NotificationListenerService() {
                 return
             }
 
-            // 2. THE COOLDOWN SHIELD
             val currentTime = System.currentTimeMillis()
             val lastReplyTime = recentReplies[title] ?: 0L
 
@@ -40,23 +51,19 @@ class AnvayaService : NotificationListenerService() {
                 return
             }
 
-            // 3. THE MESSAGE READER
             val messageText = extras.getCharSequence("android.text").toString()
             Log.d("AnvayaBeta", "New direct message: $messageText")
 
-            // 4. THE SELF-AWARENESS SHIELD
             if (messageText.startsWith("You:") || messageText.startsWith("You ") || messageText.contains("You:")) {
                 Log.d("AnvayaBeta", "Self-reply detected. Blocking loop.")
                 return
             }
 
-            // 5. THE SUMMARY SHIELD
             val isSummary = (sbn.notification?.flags ?: 0) and android.app.Notification.FLAG_GROUP_SUMMARY != 0
             if (isSummary) {
                 return
             }
 
-            // 6. SMART REPLY LOGIC
             val customReply = when {
                 messageText.contains("📷") || messageText.contains("Photo") ->
                     "I am away from my phone right now and can't load pictures! 🙈"
@@ -67,11 +74,9 @@ class AnvayaService : NotificationListenerService() {
                 messageText.contains("📹") || messageText.contains("Video") ->
                     "Can't watch videos right now, I'm busy! 🎬"
 
-                else ->
-                    "I'm currently busy and have my phone on auto-reply. I'll get back to you soon!"
+                else -> userCustomReply
             }
 
-            // 7. FIRE THE REPLY
             val actions = sbn.notification?.actions
             if (actions != null) {
                 for (action in actions) {
@@ -88,8 +93,6 @@ class AnvayaService : NotificationListenerService() {
                                 action.actionIntent.send(this, 0, intent)
                                 Log.d("AnvayaBeta", "SUCCESS: Smart reply sent!")
 
-                                // ---> THIS IS THE MISSING MAGIC LINE <---
-                                // We MUST save the time we replied so the cooldown works!
                                 recentReplies[title] = currentTime
 
                             } catch (e: Exception) {

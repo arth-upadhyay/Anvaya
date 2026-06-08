@@ -1,71 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#121212"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:background="#121212">
 
-    <TextView
-        android:id="@+id/txtAppName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ANVAYA"
-        android:textColor="#FF1744"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:shadowColor="#FF1744"
-        android:shadowRadius="15.0"
-        android:gravity="center"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="48dp" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="32dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Target Word:"
-        android:textColor="#E0E0E0"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_anvaya_logo"
+            app:tint="#00E676"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="16dp"/>
 
-    <EditText
-        android:id="@+id/edtTriggerWord"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="e.g., ping"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#757575"
-        android:backgroundTint="#FF1744"
-        android:layout_marginBottom="32dp"/>
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anvaya"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Response Message:"
-        android:textColor="#E0E0E0"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Smart Auto-Reply"
+            android:textColor="#8E8E93"
+            android:textSize="14sp"
+            android:layout_marginBottom="48dp"/>
 
-    <EditText
-        android:id="@+id/edtReplyMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="e.g., pong"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#757575"
-        android:backgroundTint="#FF1744"
-        android:layout_marginBottom="48dp"/>
+        <!-- Main Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#1E1E1E"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="24dp">
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SAVE SETTINGS"
-        android:textColor="#FF1744"
-        android:textStyle="bold"
-        android:backgroundTint="#212121"
-        android:padding="16dp"
-        android:shadowColor="#FF1744"
-        android:shadowRadius="10.0"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
 
-</LinearLayout>
+                <!-- Switch Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Auto-Reply Active"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tap to enable"
+                            android:textColor="#8E8E93"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <Switch
+                        android:id="@+id/masterSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:trackTint="@drawable/switch_track_selector"
+                        android:thumbTint="@drawable/switch_thumb_selector"/>
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#2A2A2A"
+                    android:layout_marginBottom="24dp"/>
+
+                <!-- Label -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Default Text Reply:"
+                    android:textColor="#FF1744"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Input -->
+                <EditText
+                    android:id="@+id/replyInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Type your auto-reply here..."
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#555555"
+                    android:background="@drawable/input_background"
+                    android:padding="16dp"
+                    android:textSize="14sp"
+                    android:minLines="3"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Save Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="SAVE SETTINGS"
+            android:textColor="#121212"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:background="@drawable/button_save"
+            android:elevation="4dp"/>
+
+    </LinearLayout>
+</ScrollView>

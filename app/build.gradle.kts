@@ -4,12 +4,15 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.anvaya"
     compileSdk {
         version = release(36)
+
     }
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId = "com.example.anvaya"
         minSdk = 24
         targetSdk = 36
@@ -53,4 +56,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.cardview:cardview:1.0.0")
 }

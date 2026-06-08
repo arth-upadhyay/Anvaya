@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.Anvaya" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Anvaya" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">#121212</item>
+        <item name="colorPrimary">#00E676</item>
+        <item name="colorAccent">#03DAC5</item>
+    </style>
 </resources>

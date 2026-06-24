@@ -1,5 +1,6 @@
 package com.example.anvaya
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var sharedPrefs: android.content.SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,7 +27,12 @@ class MainActivity : AppCompatActivity() {
         val input = findViewById<EditText>(R.id.replyInput)
         val saveBtn = findViewById<Button>(R.id.saveButton)
 
+        sharedPrefs = getSharedPreferences("AnvayaPrefs", Context.MODE_PRIVATE)
+        switch.isChecked = sharedPrefs.getBoolean("isBotActive", false)
+        input.setText(sharedPrefs.getString("custom_reply", "I'm currently busy. I'll get back to you soon!"))
+
         switch.setOnCheckedChangeListener { _, isChecked ->
+            sharedPrefs.edit().putBoolean("isBotActive", isChecked).apply()
             val msg = if (isChecked) "Auto-reply ON" else "Auto-reply OFF"
             showPopup(switch, msg)
         }
@@ -34,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             if (text.isBlank()) {
                 showPopup(saveBtn, "Please enter a reply!")
             } else {
+                sharedPrefs.edit().putString("custom_reply", text).apply()
                 showPopup(saveBtn, "Settings saved!")
             }
         }

@@ -1,4 +1,4 @@
-# Anvaya 🤖
+# Anvaya 
 
 An intelligent, self-aware background auto-responder for Android. Anvaya intercepts incoming WhatsApp notifications and injects smart, context-aware custom replies directly into the OS pipeline—all without opening the app or waking the screen. 
 

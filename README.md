@@ -1,42 +1,85 @@
-###Anvaya
-Anvaya (अन्वय) — Sanskrit for connection or logical sequence. A simple WhatsApp auto-reply bot for Android.
-**What It Actually Does**
-Listens to incoming WhatsApp notifications via Android's NotificationListenerService
-Sends a single custom text reply automatically
-Ignores group chats (basic heuristic: checks if the sender title contains :, @, or ()
-Enforces a 10-second cooldown per contact to avoid reply loops
-Stores your custom reply text and on/off state in SharedPreferences
-That's it. No AI. No context awareness. No media detection.
-**How It Works**
-You enable the master switch and type a reply message in the app
-You grant Notification Access in Android settings
-When a WhatsApp DM comes in, the service grabs the notification action, fills in your saved text via RemoteInput, and fires the reply intent
-The app never opens WhatsApp's UI — it injects the reply directly into the notification pipeline
-**Setup**
-Install the APK
-Go to Settings → Apps → Special Access → Notification Access and enable Anvaya
-Open Anvaya, turn on the switch, set your message, hit Save
-(Optional) Disable battery optimization for the app so Android doesn't kill the background service
-Limitations
-Table
-**Limitations**
-WhatsApp only	Hardcoded package name check (com.whatsapp, com.whatsapp.w4b)
-Text replies only	No detection of images, voice notes, or videos — it replies the same text to everything
-No self-awareness	If WhatsApp echoes your own outgoing messages as notifications, the bot may reply to itself
-Group detection is fragile	Relies on title string heuristics that can misfire
-Cooldown is in-memory only	If the service restarts, the cooldown map resets
-No encryption	Your reply text is stored in plain SharedPreferences
-Requires Notification Access	Android will warn you that the app can read all notifications — because it does
-**Tech Stack**
-Kotlin
-NotificationListenerService + RemoteInput
-XML layouts with Material Design components
-PopupWindow for toast-like feedback
-Future Ideas (Not Implemented)
-Detect media types and reply accordingly
-Filter out your own sent messages
-Support Telegram, Instagram DMs, SMS
-Persistent cooldown storage
-Encrypt saved preferences
-### **Disclaimer**
-This is a personal utility project. It uses Android accessibility-level permissions to interact with another app's notifications. Use at your own risk. This is not affiliated with WhatsApp or Meta
+# Anvaya
+
+A basic Android auto-reply utility for WhatsApp. Named after the Sanskrit word for connection.
+
+---
+
+## What it does
+
+- Monitors incoming WhatsApp notifications using Android's NotificationListenerService
+- Automatically replies with a user-defined text message
+- Skips group chats using a simple title-based heuristic
+- Prevents rapid-fire replies with a 10-second cooldown per contact
+
+---
+
+## Requirements
+
+- Android device with Notification Access settings
+- WhatsApp or WhatsApp Business installed
+
+---
+
+## Setup
+
+1. Install the APK
+2. Grant Notification Access to Anvaya in system settings
+3. Open the app, enable the toggle, enter your reply text, and save
+
+Optional: Disable battery optimization so the OS doesn't kill the background service.
+
+---
+
+## How it works
+
+The app registers a NotificationListenerService that fires when WhatsApp posts a notification. It inspects the notification bundle for the sender name and message text, checks against an in-memory cooldown map, then uses RemoteInput to inject a reply directly into the notification action without opening WhatsApp.
+
+---
+
+## Current behavior
+
+| Feature | Status |
+|---|---|
+| WhatsApp direct messages | Works |
+| Custom reply text | Works |
+| Background operation | Works |
+| Group chat filtering | Partial -- uses string matching on notification titles (:, @, () |
+| Cooldown per contact | Works, but resets if the service is killed |
+| Pop-up feedback | Works |
+| Media type detection | Not implemented |
+| Self-message filtering | Not implemented |
+| Other messaging apps | Not implemented |
+| Encrypted storage | Not implemented |
+
+---
+
+## Known limitations
+
+- WhatsApp only. Package names are hardcoded.
+- No media awareness. Replies with the same text whether the incoming message is text, photo, video, or voice note.
+- Cooldown is volatile. Stored in a HashMap that clears when the service restarts.
+- Group detection is heuristic-based. May produce false positives or negatives depending on how WhatsApp formats the notification title.
+- Plaintext storage. Settings are saved in unencrypted SharedPreferences.
+- No signature verification. The app trusts the notification source based on package name alone.
+
+---
+
+## Permissions used
+
+- android.permission.BIND_NOTIFICATION_LISTENER_SERVICE -- Required to read and interact with notifications
+
+---
+
+## Building
+
+Open in Android Studio, sync Gradle, build APK. Minimum SDK and target SDK are defined in build.gradle.
+
+---
+
+## License
+
+[Add your license here]
+
+---
+
+This is a utility project built with standard Android APIs. It is not affiliated with WhatsApp or Meta.

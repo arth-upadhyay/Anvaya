@@ -78,7 +78,7 @@ Open in Android Studio, sync Gradle, build APK. Minimum SDK and target SDK are d
 
 ## License
 
-[Add your license here]
+[MIT License --  see [LICENSE](LISENSE) FOR DETAILS.
 
 ---
 

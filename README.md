@@ -9,7 +9,7 @@ An intelligent, self-aware background auto-responder for Android. Anvaya interce
 
 ### ⚡ Key Features
 * **Customizable Auto-Reply:** Ditch the generic "I am busy right now." Users can now type and save their own personalized default text via the app's fully functional interface.
-* **Modern Material UI:** A polished, dark-themed dashboard built with Material Design 3, featuring fluid animations, interactive popup feedback, and secure state saving.
+* **Working UI:**  interactive popup feedback, and secure state saving.
 * **True Background Execution:** Anvaya operates completely autonomously. It works perfectly even if the phone is locked, the screen is off, or the device is in a deep idle state.
 * **Smart Media Filtering:** The engine detects the type of incoming message and replies contextually:
     * 📷 **Photos:** "I am away from my phone right now and can't load pictures!"

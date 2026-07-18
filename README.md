@@ -1,64 +1,42 @@
-# Anvaya 
-
-An intelligent, self-aware background auto-responder for Android. Anvaya intercepts incoming WhatsApp notifications and injects smart, context-aware custom replies directly into the OS pipeline—all without opening the app or waking the screen. 
-
-### 📖 The Meaning of Anvaya
-**Anvaya (अन्वय)** is derived from Sanskrit, meaning *connection*, *logical sequence*, or *following through*. This app was named Anvaya because it acts as the logical continuation of your conversations, ensuring your connections remain seamless and informed even when you are actively away from your device.
-
----
-
-### ⚡ Key Features
-* **Size:** less than a megabyte it's even smaller than a regular photo shot on modern phones
-* **Customizable Auto-Reply:** Ditch the generic "I am busy right now." Users can now type and save their own personalized default text via the app's fully functional interface.
-* **Working UI:**  interactive popup feedback, and secure state saving.
-* **True Background Execution:** Anvaya operates completely autonomously. It works perfectly even if the phone is locked, the screen is off, or the device is in a deep idle state.
-* **Smart Media Filtering:** The engine detects the type of incoming message and replies contextually:
-    * 📷 **Photos:** "I am away from my phone right now and can't load pictures!"
-    * 🎤 **Audio Notes:** "I can't listen to audio notes right now..."
-    * 📹 **Videos:** "Can't watch videos right now, I'm busy!"
-* **Anti-Spam Cooldown Engine:** Built-in short-term memory bank prevents infinite bot-loop conversations by enforcing a strict 10-second cooldown per contact.
-* **Self-Awareness Shield:** Intelligently detects and ignores your own sent messages to prevent echoing.
-* **Group Chat Shield:** Automatically ignores all group chat activity to prevent spamming multiple users at once.
-
----
-
-### 🛠️ Tech Stack & Architecture
-* **Language:** Kotlin
-* **UI/UX:** XML, Material Design 3, ObjectAnimator, PopupWindow
-* **Core API:** `NotificationListenerService` (Silent notification eavesdropper)
-* **Injection:** `RemoteInput` and `PendingIntent` (Bypasses the UI to send payloads directly to the Android notification pipeline)
-* **Architecture:** Headless Background Service
-
----
-
-### 🚀 Installation & Setup
-Because Anvaya operates at the system level to read incoming messages, it requires specific Android permissions to function.
-
-#### 1. Download & Install
-You do not need to build this app from source.
-1. Go to the **Releases** section on the right side of this GitHub repository.
-2. Download the latest `.apk` file directly to your Android device.
-3. Open the downloaded file to install it. *(Note: Your phone may ask you to allow "Install from Unknown Sources" since it's not from the Google Play Store. This is normal).*
-
-#### 2. Grant Notification Access (Crucial Step)
-Anvaya relies on a silent notification listener to detect incoming messages. **The app will not work until this is enabled.**
-1. Open your Android phone's **Settings**.
-2. Search for **Notification Access** (or Device & App Notifications).
-3. Find **Anvaya** in the list of apps.
-4. Toggle the switch to **Allow notification access**.
-
-#### 3. Battery Optimization (For aggressive OS like realme UI / MIUI)
-To ensure Anvaya isn't killed in the background by your phone's battery manager:
-1. Long-press the Anvaya app icon and tap **App Info**.
-2. Go to **Battery Usage**.
-3. Enable **Allow background activity** (or set to "Unrestricted").
-
----
-
-### 💻 For Developers (Building from Source)
-If you want to modify the code: clone this repository, open the project in Android Studio, and sync the Gradle files. You can then build a custom APK or push directly to a connected device.
-
----
-
-### ⚠️ Current Status & Roadmap
-* **WhatsApp Exclusive (For Now):** The current version intercepts and replies *only* to WhatsApp notifications. Support for other messaging platforms (Telegram, Instagram, SMS) is actively in development and will be implemented soon!
+###Anvaya
+Anvaya (अन्वय) — Sanskrit for connection or logical sequence. A simple WhatsApp auto-reply bot for Android.
+**What It Actually Does**
+Listens to incoming WhatsApp notifications via Android's NotificationListenerService
+Sends a single custom text reply automatically
+Ignores group chats (basic heuristic: checks if the sender title contains :, @, or ()
+Enforces a 10-second cooldown per contact to avoid reply loops
+Stores your custom reply text and on/off state in SharedPreferences
+That's it. No AI. No context awareness. No media detection.
+**How It Works**
+You enable the master switch and type a reply message in the app
+You grant Notification Access in Android settings
+When a WhatsApp DM comes in, the service grabs the notification action, fills in your saved text via RemoteInput, and fires the reply intent
+The app never opens WhatsApp's UI — it injects the reply directly into the notification pipeline
+**Setup**
+Install the APK
+Go to Settings → Apps → Special Access → Notification Access and enable Anvaya
+Open Anvaya, turn on the switch, set your message, hit Save
+(Optional) Disable battery optimization for the app so Android doesn't kill the background service
+Limitations
+Table
+**Limitations**
+WhatsApp only	Hardcoded package name check (com.whatsapp, com.whatsapp.w4b)
+Text replies only	No detection of images, voice notes, or videos — it replies the same text to everything
+No self-awareness	If WhatsApp echoes your own outgoing messages as notifications, the bot may reply to itself
+Group detection is fragile	Relies on title string heuristics that can misfire
+Cooldown is in-memory only	If the service restarts, the cooldown map resets
+No encryption	Your reply text is stored in plain SharedPreferences
+Requires Notification Access	Android will warn you that the app can read all notifications — because it does
+**Tech Stack**
+Kotlin
+NotificationListenerService + RemoteInput
+XML layouts with Material Design components
+PopupWindow for toast-like feedback
+Future Ideas (Not Implemented)
+Detect media types and reply accordingly
+Filter out your own sent messages
+Support Telegram, Instagram DMs, SMS
+Persistent cooldown storage
+Encrypt saved preferences
+### **Disclaimer**
+This is a personal utility project. It uses Android accessibility-level permissions to interact with another app's notifications. Use at your own risk. This is not affiliated with WhatsApp or Meta

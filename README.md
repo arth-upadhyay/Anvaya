@@ -8,6 +8,7 @@ An intelligent, self-aware background auto-responder for Android. Anvaya interce
 ---
 
 ### ⚡ Key Features
+* **Size:** less than a megabyte it's even smaller than a regular photo shot on modern phones
 * **Customizable Auto-Reply:** Ditch the generic "I am busy right now." Users can now type and save their own personalized default text via the app's fully functional interface.
 * **Working UI:**  interactive popup feedback, and secure state saving.
 * **True Background Execution:** Anvaya operates completely autonomously. It works perfectly even if the phone is locked, the screen is off, or the device is in a deep idle state.

@@ -107,22 +107,53 @@
                     android:layout_marginBottom="12dp"/>
 
                 <EditText
+                    android:id="@+id/replyInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Type default reply here..."
+                    android:layout_marginBottom="20dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/input_background"
+                    android:padding="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Media Replies:"
+                    android:textColor="#FF1744"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
                     android:id="@+id/replyPhotoInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Reply for photos/images" />
+                    android:hint="Reply for photos/images"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/input_background"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/replyAudioInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Reply for voice/audio notes" />
+                    android:hint="Reply for voice/audio notes"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/input_background"
+                    android:padding="16dp"/>
 
                 <EditText
                     android:id="@+id/replyVideoInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Reply for videos" />
+                    android:hint="Reply for videos"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/input_background"
+                    android:padding="16dp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

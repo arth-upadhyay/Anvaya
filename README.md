@@ -1,6 +1,8 @@
 # Anvaya
 
-A basic Android auto-reply utility for WhatsApp. Named after the Sanskrit word for connection.
+A basic Android auto-reply utility for WhatsApp.
+
+**Anvaya** (अन्वय) is a Sanskrit word meaning *connection*, *logical sequence*, or *following through*. The name was chosen because the app sits in the background and continues your conversations for you when you are away from your device -- acting as a logical extension of your replies.
 
 ---
 
@@ -10,6 +12,8 @@ A basic Android auto-reply utility for WhatsApp. Named after the Sanskrit word f
 - Automatically replies with a user-defined text message
 - Skips group chats using a simple title-based heuristic
 - Prevents rapid-fire replies with a 10-second cooldown per contact
+- Detects media types (text, photo, audio, video) and replies with different templates
+- Filters out echoes of its own replies to prevent loops
 
 ---
 
@@ -17,14 +21,17 @@ A basic Android auto-reply utility for WhatsApp. Named after the Sanskrit word f
 
 - Android device with Notification Access settings
 - WhatsApp or WhatsApp Business installed
+- Notification Access permission granted to Anvaya (the app will block you until you do)
 
 ---
 
 ## Setup
 
 1. Install the APK
-2. Grant Notification Access to Anvaya in system settings
-3. Open the app, enable the toggle, enter your reply text, and save
+2. Open the app -- it will immediately prompt you to grant Notification Access
+3. Tap "Open Settings", find Anvaya in the list, and enable it
+4. Return to the app. If the permission is granted, the UI unlocks
+5. Enable the toggle, enter your reply texts, and save
 
 Optional: Disable battery optimization so the OS doesn't kill the background service.
 
@@ -32,7 +39,7 @@ Optional: Disable battery optimization so the OS doesn't kill the background ser
 
 ## How it works
 
-The app registers a NotificationListenerService that fires when WhatsApp posts a notification. It inspects the notification bundle for the sender name and message text, checks against an in-memory cooldown map, then uses RemoteInput to inject a reply directly into the notification action without opening WhatsApp.
+The app registers a NotificationListenerService that fires when WhatsApp posts a notification. It inspects the notification bundle for the sender name and message text, checks against persistent cooldown storage, detects media type via heuristics, then uses RemoteInput to inject a reply directly into the notification action without opening WhatsApp.
 
 ---
 
@@ -42,12 +49,12 @@ The app registers a NotificationListenerService that fires when WhatsApp posts a
 |---|---|
 | WhatsApp direct messages | Works |
 | Custom reply text | Works |
+| Media-aware replies (photo/audio/video) | Works via heuristics |
 | Background operation | Works |
 | Group chat filtering | Partial -- uses string matching on notification titles (:, @, () |
-| Cooldown per contact | Works, but resets if the service is killed |
+| Cooldown per contact | Works, persists across service restarts |
+| Self-message echo filter | Works, 15-second window |
 | Pop-up feedback | Works |
-| Media type detection | Not implemented |
-| Self-message filtering | Not implemented |
 | Other messaging apps | Not implemented |
 | Encrypted storage | Not implemented |
 
@@ -56,11 +63,11 @@ The app registers a NotificationListenerService that fires when WhatsApp posts a
 ## Known limitations
 
 - WhatsApp only. Package names are hardcoded.
-- No media awareness. Replies with the same text whether the incoming message is text, photo, video, or voice note.
-- Cooldown is volatile. Stored in a HashMap that clears when the service restarts.
-- Group detection is heuristic-based. May produce false positives or negatives depending on how WhatsApp formats the notification title.
+- Media detection is heuristic-based. Captions on media may be treated as text replies.
+- Group detection is heuristic-based. May produce false positives or negatives.
 - Plaintext storage. Settings are saved in unencrypted SharedPreferences.
 - No signature verification. The app trusts the notification source based on package name alone.
+- The app cannot function without Notification Access and will refuse to open its main UI until granted.
 
 ---
 
@@ -78,7 +85,7 @@ Open in Android Studio, sync Gradle, build APK. Minimum SDK and target SDK are d
 
 ## License
 
-[MIT License --  see [LICENSE](LISENSE) FOR DETAILS.
+MIT License -- see LICENSE for details.
 
 ---
 

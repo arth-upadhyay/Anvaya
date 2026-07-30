@@ -2,7 +2,7 @@
 
 A basic Android auto-reply utility for WhatsApp.
 
-**Anvaya** (अन्वय) is a Sanskrit word meaning *connection*, *logical sequence*, or *following through*. The name was chosen because the app sits in the background and continues your conversations for you when you are away from your device -- acting as a logical extension of your replies.
+**Anvaya** (अन्वय) is a Sanskrit word meaning *connection*, *logical sequence*, or *following through*.
 
 ---
 
